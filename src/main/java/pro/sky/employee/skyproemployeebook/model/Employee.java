@@ -1,4 +1,4 @@
-package pro.sky.employee.skyproemployeebook;
+package pro.sky.employee.skyproemployeebook.model;
 
 import java.util.Objects;
 
@@ -17,6 +17,10 @@ public class Employee {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        return firstName + lastName;
     }
 
     @Override

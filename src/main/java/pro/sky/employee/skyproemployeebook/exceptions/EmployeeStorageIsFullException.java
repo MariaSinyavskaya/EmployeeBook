@@ -1,4 +1,4 @@
-package pro.sky.employee.skyproemployeebook;
+package pro.sky.employee.skyproemployeebook.exceptions;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
