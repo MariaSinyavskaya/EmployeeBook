@@ -9,8 +9,8 @@ import pro.sky.employee.skyproemployeebook.exceptions.EmployeeStorageIsFullExcep
 import java.util.Collection;
 
 public interface EmployeeService {
-    Employee addEmployee(String firstName, String lastName) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException;
-    Employee removeEmployee(String firstName, String lastName) throws EmployeeNotFoundException;
-    Employee findEmployee(String firstName, String lastName) throws EmployeeNotFoundException;
-    Collection<Employee> printAllEmployees();
+    Employee addEmployee(String firstName, String lastName, int departmentId, int salary) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException;
+    Employee removeEmployee(String firstName, String lastName, int departmentId, int salary) throws EmployeeNotFoundException;
+    Employee findEmployee(String firstName, String lastName, int departmentId, int salary) throws EmployeeNotFoundException;
+    Collection<Employee> returnAllEmployees();
 }

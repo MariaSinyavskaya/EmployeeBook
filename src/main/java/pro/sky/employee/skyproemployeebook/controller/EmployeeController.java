@@ -20,24 +20,30 @@ public class EmployeeController {
 
     @GetMapping(path = "/add")
     public Employee addEmployee(@RequestParam("firstName")  String firstName,
-                                @RequestParam("lastName") String lastName) {
-        return employeeServiceimpl.addEmployee(firstName, lastName) ;
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("departmentId") int departmentId,
+                                @RequestParam("salary") int salary) {
+        return employeeServiceimpl.addEmployee(firstName, lastName, departmentId, salary) ;
     }
 
     @GetMapping(path = "/remove")
     public Employee removeEmployee(@RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName) {
-        return employeeServiceimpl.removeEmployee(firstName,lastName);
+                                   @RequestParam("lastName") String lastName,
+                                   @RequestParam("departmentId") int departmentId,
+                                   @RequestParam("salary") int salary) {
+        return employeeServiceimpl.removeEmployee(firstName,lastName, departmentId, salary);
     }
 
     @GetMapping(path = "/find")
     public Employee findEmployee(@RequestParam("firstName") String firstName,
-                                 @RequestParam("lastName") String lastName) {
-        return employeeServiceimpl.findEmployee(firstName, lastName);
+                                 @RequestParam("lastName") String lastName,
+                                 @RequestParam("departmentId") int departmentId,
+                                 @RequestParam("salary") int salary) {
+        return employeeServiceimpl.findEmployee(firstName, lastName, departmentId, salary);
     }
 
     @GetMapping
     public Collection<Employee> printAllEmployees() {
-         return employeeServiceimpl.printAllEmployees();
+         return employeeServiceimpl.returnAllEmployees();
     }
 }

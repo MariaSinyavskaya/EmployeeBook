@@ -8,21 +8,41 @@ import pro.sky.employee.skyproemployeebook.exceptions.EmployeeStorageIsFullExcep
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private static final int MAX_NUMBER_EMPLOYEES = 15;
-    private final Map<String, Employee> employees;
+    private static final int MAX_NUMBER_EMPLOYEES = 30;
+    private final Map<String, Employee> employees = new HashMap<>(Map.of(
+            "ЕкатеринаСарафанова",
+            new Employee("Екатерина", "Сарафанова", 1, 68550),
+            "НикитаБратченко",
+            new Employee("Никита", "Братченко", 5, 25327),
+            "ДарьяВасильева",
+            new Employee("Дарья", "Васильева", 3, 33088),
+            "ДарьяЮдина",
+            new Employee("Дарья", "Юдина", 2, 55457),
+            "МарияСинявская",
+            new Employee("Мария", "Синявская", 4, 40789),
+            "ВикторияОрлова",
+            new Employee("Виктория", "Орлова", 1, 37440),
+            "МарияЛарионова",
+            new Employee("Мария", "Ларионова", 3, 27890),
+            "СофьяСиротина",
+            new Employee("Софья", "Сиротина", 2, 42220),
+            "НикитаТихонов",
+            new Employee("Никита", "Тихонов", 5, 38990),
+            "АлександрСергеев",
+            new Employee("Александр", "Сергеев", 4, 70888)
+    ));
 
-    public EmployeeServiceImpl(Map<String, Employee> employees) {
-        this.employees = employees;
-    }
+
 
     @Override
-    public Employee addEmployee(String firstName, String lastName)
+    public Employee addEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже добавлен");
         } else if (employees.size() > MAX_NUMBER_EMPLOYEES) {
@@ -33,9 +53,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee removeEmployee(String firstName, String lastName)
+    public Employee removeEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeNotFoundException {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             employees.remove(employee.getFullName(), employee);
             return employee;
@@ -44,9 +64,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployee(String firstName, String lastName)
+    public Employee findEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeNotFoundException {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employee;
         }
@@ -55,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Collection<Employee> printAllEmployees() {
+    public Collection<Employee> returnAllEmployees() {
         return Collections.unmodifiableCollection(employees.values());
     }
 }
