@@ -1,6 +1,9 @@
 package pro.sky.employee.skyproemployeebook.service;
 
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import pro.sky.employee.skyproemployeebook.exceptions.EmployeeInvalidInputException;
 import pro.sky.employee.skyproemployeebook.model.Employee;
 import pro.sky.employee.skyproemployeebook.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.employee.skyproemployeebook.exceptions.EmployeeNotFoundException;
@@ -8,13 +11,12 @@ import pro.sky.employee.skyproemployeebook.exceptions.EmployeeStorageIsFullExcep
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private static final int MAX_NUMBER_EMPLOYEES = 30;
-    private final Map<String, Employee> employees = new HashMap<>(Map.of(
+    private final Map<String, Employee> employees = Maps.newHashMap(Map.of(
             "ЕкатеринаСарафанова",
             new Employee("Екатерина", "Сарафанова", 1, 68550),
             "НикитаБратченко",
@@ -37,11 +39,16 @@ public class EmployeeServiceImpl implements EmployeeService {
             new Employee("Александр", "Сергеев", 4, 70888)
     ));
 
-
+    public void checkIsAlpha(String firstName, String lastName) {
+        if (!(StringUtils.isAlpha(firstName) || StringUtils.isAlpha(lastName))) {
+            throw new EmployeeInvalidInputException();
+        }
+    }
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
+        checkIsAlpha(firstName, lastName);
         Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже добавлен");
@@ -55,6 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee removeEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeNotFoundException {
+        checkIsAlpha(firstName, lastName);
         Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             employees.remove(employee.getFullName(), employee);
@@ -66,6 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String firstName, String lastName, int departmentId, int salary)
             throws EmployeeNotFoundException {
+        checkIsAlpha(firstName,lastName);
         Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employee;
