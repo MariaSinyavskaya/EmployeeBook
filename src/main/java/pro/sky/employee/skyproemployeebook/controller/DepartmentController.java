@@ -1,9 +1,6 @@
 package pro.sky.employee.skyproemployeebook.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.employee.skyproemployeebook.model.Employee;
 import pro.sky.employee.skyproemployeebook.service.DepartmentServiceImpl;
 
@@ -11,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/departments")
+@RequestMapping(path = "/department")
 public class DepartmentController {
     private final DepartmentServiceImpl departmentServiceImpl;
 
@@ -19,22 +16,27 @@ public class DepartmentController {
         this.departmentServiceImpl = departmentServiceImpl;
     }
 
-    @GetMapping(path = "/max-salary")
-    public Employee employeeWithMaxSalary(@RequestParam("departmentId") int departmentId) {
-        return departmentServiceImpl.findEmployeeWithMaxSalary(departmentId);
+    @GetMapping(path = "/{id}/salary/max")
+    public Integer employeeWithMaxSalary(@PathVariable("id") int departmentId) {
+        return departmentServiceImpl.findMaxSalaryByDepartment(departmentId);
     }
 
-    @GetMapping(path = "min-salary")
-    public Employee employeeWithMinSalary(@RequestParam("departmentId") int departmentId) {
-        return departmentServiceImpl.findEmployeeWithMinSalary(departmentId);
+    @GetMapping(path = "/{id}/salary/min")
+    public Integer employeeWithMinSalary(@PathVariable("id") int departmentId) {
+        return departmentServiceImpl.findMinSalaryByDepartment(departmentId);
     }
 
-    @GetMapping(path = "all", params = "departmentId")
-    public List<Employee> returnEmployeesByDepartmentId(int departmentId) {
+    @GetMapping(path = "/{id}/salary/sum")
+    public Integer sumOfSalaryByDepartment(@PathVariable("id") int departmentId) {
+        return departmentServiceImpl.findSumOfSalaryByDepartment(departmentId);
+    }
+
+    @GetMapping(path = "/{id}/employees")
+    public List<Employee> returnEmployeesByDepartmentId(@PathVariable("id") int departmentId) {
         return departmentServiceImpl.returnEmployeesByDepartmentId(departmentId);
     }
 
-    @GetMapping(path = "all")
+    @GetMapping(path = "/employees")
     public Map<Integer, List<Employee>> returnAllEmployeesByDepartmentId() {
         return departmentServiceImpl.returnAllEmployeesByDepartmentId();
     }

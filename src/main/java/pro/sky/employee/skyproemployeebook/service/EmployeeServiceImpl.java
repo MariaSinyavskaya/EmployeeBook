@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private static final int MAX_NUMBER_EMPLOYEES = 30;
+    private static final int MAX_NUMBER_EMPLOYEES = 15;
     private final Map<String, Employee> employees = Maps.newHashMap(Map.of(
             "ЕкатеринаСарафанова",
             new Employee("Екатерина", "Сарафанова", 1, 68550),
@@ -40,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     ));
 
     public void checkIsAlpha(String firstName, String lastName) {
-        if (!(StringUtils.isAlpha(firstName) || StringUtils.isAlpha(lastName))) {
+        if (!(StringUtils.isAlpha(firstName)) || !(StringUtils.isAlpha(lastName))) {
             throw new EmployeeInvalidInputException();
         }
     }
@@ -52,7 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee(firstName, lastName, departmentId, salary);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже добавлен");
-        } else if (employees.size() > MAX_NUMBER_EMPLOYEES) {
+        }
+        if (employees.size() > MAX_NUMBER_EMPLOYEES) {
             throw new EmployeeStorageIsFullException("Нельзя добавить сотрудника, потому что коллекция переполнена");
         }
         employees.put(employee.getFullName(), employee);

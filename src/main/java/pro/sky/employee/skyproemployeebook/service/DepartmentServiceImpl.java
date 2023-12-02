@@ -9,41 +9,49 @@ import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
-    private final EmployeeServiceImpl employeeServiceimpl;
+    private final EmployeeService employeeService;
 
-    public DepartmentServiceImpl(EmployeeServiceImpl employeeServiceimpl) {
-        this.employeeServiceimpl = employeeServiceimpl;
+    public DepartmentServiceImpl(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @Override
-    public Employee findEmployeeWithMaxSalary(int departmentId) {
-         Optional<Employee> maxSalary = employeeServiceimpl.returnAllEmployees().stream()
+    public Integer findMaxSalaryByDepartment(int departmentId) {
+        return employeeService.returnAllEmployees().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
-                .max(Comparator.comparingInt(e -> e.getSalary()));
-        return maxSalary.orElseThrow(() -> new EmployeeNotFoundException("Сотрудник не найден"));
+                .mapToInt(e -> e.getSalary())
+                .max()
+                .orElseThrow(() -> new EmployeeNotFoundException("Сотрудник не найден"));
     }
 
     @Override
-    public Employee findEmployeeWithMinSalary(int departmentId) {
-        Optional<Employee> minSalary = employeeServiceimpl.returnAllEmployees().stream()
+    public Integer findMinSalaryByDepartment(int departmentId) {
+        return employeeService.returnAllEmployees().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
-                .min(Comparator.comparingInt(e -> e.getSalary()));
-        return minSalary.orElseThrow(() -> new EmployeeNotFoundException("Сотрудник не найден"));
+                .mapToInt(e -> e.getSalary())
+                .min()
+                .orElseThrow(() -> new EmployeeNotFoundException("Сотрудник не найден"));
     }
 
     @Override
     public List<Employee> returnEmployeesByDepartmentId(int departmentId) {
-        final List<Employee> employeesByDepartmentId = employeeServiceimpl.returnAllEmployees().stream()
+        final List<Employee> employeesByDepartmentId = employeeService.returnAllEmployees().stream()
                 .filter(e -> e.getDepartmentId() == departmentId)
                 .collect(Collectors.toList());
         return employeesByDepartmentId;
     }
 
     @Override
-    public Map<Integer, List<Employee>> returnAllEmployeesByDepartmentId() {
-        return employeeServiceimpl.returnAllEmployees().stream()
-                .collect(Collectors.groupingBy(e -> e.getDepartmentId()));
+    public Integer findSumOfSalaryByDepartment(int departmentId) {
+        return employeeService.returnAllEmployees().stream()
+                .filter(e -> e.getDepartmentId() == departmentId)
+                .mapToInt(e -> e.getSalary())
+                .sum();
     }
 
-
+    @Override
+    public Map<Integer, List<Employee>> returnAllEmployeesByDepartmentId() {
+        return employeeService.returnAllEmployees().stream()
+                .collect(Collectors.groupingBy(e -> e.getDepartmentId()));
+    }
 }
